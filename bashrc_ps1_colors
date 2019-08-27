@@ -41,8 +41,9 @@ print_conda() {
 
 parse_git_branch() {
     branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/^* \(.*\)/\1/')
-    status=$([[ $(git status --porcelain 2> /dev/null) ]] && echo " *")
-    [[ $branch ]] && echo "[$branch$status]"
+    status=$([[ $(git status --untracked-files=no --porcelain 2> /dev/null) ]] && echo " *")
+    untracked=$([[ ! -z $(git ls-files --others --exclude-standard 2> /dev/null) ]] && echo " +")
+    [[ $branch ]] && echo "[$branch$status$untracked]"
 }
 
 ps1_prompt() {
