@@ -38,16 +38,17 @@
 get_build_dir() {
     pwd_source_repo=$(git rev-parse --show-toplevel)
     repo=$(basename $pwd_source_repo)
+    path_in_repo=$(realpath --relative-to="${pwd_source_repo}" .)
     branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/^* \(.*\)/\1/')
-    dest_path=${MY_SOURCE_BUILD_DIR}${pwd_source_repo#${MY_SOURCE_HOME_DIR}}/${branch}
-    echo $dest_path
+    dest_path=${MY_SOURCE_BUILD_DIR}${pwd_source_repo#${MY_SOURCE_HOME_DIR}}/${path_in_repo}/${branch}
+    echo ${dest_path}
 }
 
 link_compile_command() {
-    build_dir=$1
+    build_dir=$(realpath $1)
     pwd_source_repo=$(git rev-parse --show-toplevel)
     rm -f ${pwd_source_repo}/compile_commands.json
-    ln -s $(echo "${build_dir}/compile_commands.json") ${pwd_source_repo}/compile_commands.json
+    ln -s $(echo "${build_dir}/compile_commands.json") $(realpath ${pwd_source_repo})/compile_commands.json
 }
 
 cdb() {
