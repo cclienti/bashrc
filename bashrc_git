@@ -10,9 +10,9 @@ function git_rm_merged() {
 
     echo "Using egrep pattern ${pattern}"
 
-    for branch in $(git branch --merged  | egrep '(bugfix/|feature/)')
+    for branch in $(git branch --merged  | egrep "$pattern" | sed 's/\* //g')
     do
         echo "removing branch ${branch}"
-        git branch -d ${branch};
+        git branch -d ${branch}
     done
 }
