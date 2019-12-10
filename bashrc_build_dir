@@ -40,7 +40,7 @@ get_build_dir() {
     repo=$(basename $pwd_source_repo)
     path_in_repo=$(realpath --relative-to="${pwd_source_repo}" .)
     branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/^* \(.*\)/\1/')
-    dest_path=${MY_SOURCE_BUILD_DIR}${pwd_source_repo#${MY_SOURCE_HOME_DIR}}/${path_in_repo}/${branch}
+    dest_path=${MY_SOURCE_BUILD_DIR}${pwd_source_repo#${MY_SOURCE_HOME_DIR}}/${branch}/${path_in_repo}
     echo ${dest_path}
 }
 
